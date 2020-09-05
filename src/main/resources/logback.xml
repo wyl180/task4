@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--debug:要不要查看logback日志内部启动过程-->
+<!--scan：当配置文件有改动要不要扫描-->
+<!--scanPeriod：隔多久扫描-->
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+    <!--    控制台配置-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+
+        <!--数据格式化-->
+        <encoder>
+            <!--输出的数据模板-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread][%level] - %m%n</pattern>
+
+            <!-- 常用的Pattern变量,大家可打开该pattern进行输出观察 -->
+
+            <!--
+
+            <pattern>
+
+            %d{yyyy-MM-dd HH:mm:ss} [%level] - %msg%n
+
+            Logger: %logger
+
+            Class: %class
+
+            File: %file
+
+            Caller: %caller
+
+            Line: %line
+
+            Message: %m
+
+            Method: %M
+
+            Relative: %relative
+
+            Thread: %thread
+
+            Exception: %ex
+
+            xException: %xEx
+
+            nopException: %nopex
+
+            rException: %rEx
+
+            Marker: %marker
+
+            %n
+
+            </pattern>
+
+            -->
+
+        </encoder>
+
+    </appender>
+
+    <!-- 按日期区分的滚动日志  -->
+
+    <appender name="ERROR-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>logs/error.log</file>
+        <!--输出的模板-->
+        <encoder>
+
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
+
+        </encoder>
+        <!--过滤器配置-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--   设置一个等级-->
+            <level>ERROR</level>
+            <!--   如果传来的日志信息是这个等级的就允许输入到error.log文件-->
+            <onMatch>ACCEPT</onMatch>
+            <!--            如果不是就拒绝-->
+            <onMismatch>DENY</onMismatch>
+
+        </filter>
+        <!--定义滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <!--  每天结束就保存一份-->
+            <fileNamePattern>error.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+
+            <!--  保存数量，超过30份就删除第1份文件-->
+            <maxHistory>30</maxHistory>
+
+        </rollingPolicy>
+
+    </appender>
+
+    <!-- 按文件大小区分的滚动日志 -->
+
+    <appender name="INFO-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>logs/info.log</file>
+
+        <encoder>
+
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
+
+        </encoder>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+
+            <level>INFO</level>
+
+            <onMatch>ACCEPT</onMatch>
+
+            <onMismatch>DENY</onMismatch>
+
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+
+            <fileNamePattern>info.%i.log</fileNamePattern>
+
+            <minIndex>1</minIndex>
+
+            <maxIndex>3</maxIndex>
+
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+
+            <maxFileSize>5MB</maxFileSize>
+
+        </triggeringPolicy>
+
+    </appender>
+
+    <!-- 按日期和大小区分的滚动日志 -->
+
+    <appender name="DEBUG-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>logs/debug.log</file>
+
+        <encoder>
+
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
+
+        </encoder>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+
+            <level>DEBUG</level>
+
+            <onMatch>ACCEPT</onMatch>
+
+            <onMismatch>DENY</onMismatch>
+
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <!-- rollover daily -->
+
+            <fileNamePattern>debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+            <timeBasedFileNamingAndTriggeringPolicy
+
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+
+                <!-- or whenever the file size reaches 100MB -->
+
+                <maxFileSize>100MB</maxFileSize>
+
+            </timeBasedFileNamingAndTriggeringPolicy>
+
+        </rollingPolicy>
+
+    </appender>
+
+    <!-- 级别阀值过滤 -->
+
+    <appender name="SUM-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>logs/sum.log</file>
+
+        <encoder>
+
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
+
+        </encoder>
+
+        <!-- deny all events with a level below INFO, that is TRACE and DEBUG -->
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+
+            <level>INFO</level>
+
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <!-- rollover daily -->
+
+            <fileNamePattern>debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+            <timeBasedFileNamingAndTriggeringPolicy
+
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+
+                <!-- or whenever the file size reaches 100MB -->
+
+                <maxFileSize>100MB</maxFileSize>
+
+            </timeBasedFileNamingAndTriggeringPolicy>
+
+        </rollingPolicy>
+
+    </appender>
+
+    <root level="debug">
+
+        <appender-ref ref="STDOUT"/>
+
+        <appender-ref ref="ERROR-OUT"/>
+
+        <appender-ref ref="INFO-OUT"/>
+
+        <appender-ref ref="DEBUG-OUT"/>
+
+        <appender-ref ref="SUM-OUT"/>
+
+    </root>
+    <logger name="logback.olf.log" level="info">
+
+        <appender-ref ref = "console_out"/>
+
+        <appender-ref ref = "infoAppender"/>
+
+    </logger>
+    <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager">
+        <level value="WARN"/>
+        <appender-ref ref="MyLogFile"/>
+    </logger>
+
+</configuration>

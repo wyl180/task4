@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jnshu.dao.ProfessionMapper">
+  <resultMap id="BaseResultMap" type="com.jnshu.pojo.Profession">
+    <id column="id"  property="id" />
+    <result column="image"  property="image" />
+    <result column="profession_name"  property="professionName" />
+    <result column="direction"  property="direction" />
+    <result column="limit_con"  property="limitCon" />
+    <result column="difficulty"  property="difficulty" />
+    <result column="growth_junior"  property="growthJunior" />
+    <result column="growth_senior"  property="growthSenior" />
+    <result column="need_count"  property="needCount" />
+    <result column="salary_junior"  property="salaryJunior" />
+    <result column="salary_senior"  property="salarySenior" />
+    <result column="dev_type" property="devType"/>
+  </resultMap>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *from profession
+
+  </select>
+
+</mapper>

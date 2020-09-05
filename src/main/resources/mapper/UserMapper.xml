@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jnshu.dao.UserMapper">
+    <resultMap id="userResultMap" type="com.jnshu.pojo.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="image" column="image"/>
+    </resultMap>
+    <insert id="registUser" parameterType="com.jnshu.pojo.User" useGeneratedKeys="true">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test='username != null and username!= "" '>
+                username,
+            </if>
+            <if test='password != null and password != "" '>
+                password,
+            </if>
+            <if test='email != null and email != "" '>
+                email,
+            </if>
+            <if test='phone != null and phone != "" '>
+                phone,
+            </if>
+            <if test='image != null and image != "" '>
+                photo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+
+            <if test='username != null and username!= "" '>
+                #{username},
+            </if>
+            <if test='password != null and password != "" '>
+                #{password},
+            </if>
+            <if test='email != null and email != "" '>
+                #{email},
+            </if>
+            <if test='phone != null and phone != "" '>
+                #{phone},
+            </if>
+            <if test='image != null and image!= "" '>
+                #{image},
+            </if>
+        </trim>
+
+    </insert>
+    <select id="findUser" parameterType="java.lang.String" resultMap="userResultMap">
+        select *from user where username=#{name} or email=#{name} or phone=#{name}
+    </select>
+    <update id="updateHead" parameterType="com.jnshu.pojo.User">
+        update user set photo=#{image} where username=#{username}
+    </update>
+</mapper>

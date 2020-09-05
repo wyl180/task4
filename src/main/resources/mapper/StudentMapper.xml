@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jnshu.dao.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.jnshu.pojo.Student">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="student_name" jdbcType="VARCHAR" property="studentName" />
+    <result column="intro" jdbcType="VARCHAR" property="intro" />
+    <result column="salary" jdbcType="INTEGER" property="salary" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, image, title, student_name, intro, salary
+  </sql>
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student order by salary desc limit 0,4
+  </select>
+  <select id="getCount" resultType="java.lang.Integer">
+    select count(*) from student
+  </select>
+  <select id="queryByPage" parameterType="com.jnshu.pojo.Page" resultMap="BaseResultMap">
+    select * from student order by salary desc limit #{skips},#{pageSize}
+  </select>
+
+</mapper>
